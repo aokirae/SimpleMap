@@ -10,6 +10,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
+
+    private Button updateButton;
 
     private enum UpdatingState {STOPPED, REQUESTING, STARTED}
 
@@ -67,9 +71,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(10000L);
-        locationRequest.setFastestInterval(5000L);
-        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        //locationRequest.setInterval(10000L);
+        //locationRequest.setFastestInterval(5000L);
+        //locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+        updateButton = findViewById(R.id.update_button);
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+            }
+        });
 
         locationCallback = new LocationCallback() {
             @Override
@@ -171,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             break;
         }
     }
+
 
     private void stopLocationUpdate() {
         Log.d(TAG, "stopLocationUpdate");
